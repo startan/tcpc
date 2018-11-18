@@ -1,0 +1,42 @@
+group 'com.nextf'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
+    }
+}
+apply plugin: "com.github.johnrengelman.shadow"
+
+
+shadowJar {
+    baseName = project.name
+    classifier = null
+    version = null
+    manifest {
+        attributes 'Main-Class' : 'tcpc.MainClass'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public'}
+}
+
+dependencies {
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile group: 'io.projectreactor.netty', name: 'reactor-netty', version: '0.8.1.RELEASE'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
+
+    compile (group: 'org.littleshoot', name: 'littleproxy', version: '1.1.2') {
+        exclude module: 'netty-all'
+    }
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
